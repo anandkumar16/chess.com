@@ -17,6 +17,12 @@ This is an online chess game built using Express, Socket.io, and the Chess.js li
 - **Move Validation:** The Chess.js library is used to ensure that all moves are valid according to the rules of chess.
 - **Disconnect Handling:** Player roles are managed dynamically when users disconnect from the game.
 
+
+## preview
+
+![Chess Board]([https://example.com/path/to/your/image.png](https://drive.google.com/file/d/1rcfgsdE2iWo4oMemeKhbPN2cddyWXUEE/view?usp=drive_link))
+
+
 ## Setup
 
 1. **Clone the repository:**
