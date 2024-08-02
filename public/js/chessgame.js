@@ -31,7 +31,8 @@ const renderBoard = () => {
                 );
                 pieceElement.innerText = getPieceUnicode(square);
 
-                pieceElement.draggable = playerRole === square.color;
+                // Only allow dragging if it's the player's turn and they're not a spectator
+                pieceElement.draggable = playerRole === square.color && playerRole === chess.turn();
                 pieceElement.addEventListener("dragstart", (e) => {
                     if (pieceElement.draggable) {
                         draggedPiece = pieceElement;
@@ -128,6 +129,8 @@ socket.on("spectatorRole", function() {
     playerRole = null;
     playerInfoElement.innerText = `You are a spectator (${username})`;
     renderBoard();
+    // Disable all piece dragging for spectators
+    document.querySelectorAll('.piece').forEach(piece => piece.draggable = false);
 });
 
 socket.on("updatePlayers", function(players) {
@@ -151,4 +154,21 @@ socket.on("move", function(move) {
     renderBoard();
 });
 
+// New event handlers
+socket.on("invalidMove", (move) => {
+    console.log("Invalid move:", move);
+    // You could show an error message to the user here
+    alert("Invalid move. Please try again.");
+});
+
+socket.on("gameOver", (result) => {
+    gameResultElement.innerText = result;
+    // Disable further moves
+    document.querySelectorAll('.piece').forEach(piece => piece.draggable = false);
+    // You could add a "New Game" button here if desired
+});
+
 renderBoard();
+
+// Initial connection to get the current board state
+socket.emit("getBoardState");
