@@ -2,10 +2,13 @@ const socket = io();
 const chess = new Chess();
 
 const boardElement = document.querySelector(".chessboard");
+const gameResultElement = document.querySelector("#game-result");
+const playerInfoElement = document.querySelector("#player-info");
 
 let draggedPiece = null;
 let playerRole = null;
 let sourceSquare = null;
+let username = null;
 
 const renderBoard = () => {
     const board = chess.board();
@@ -65,11 +68,10 @@ const renderBoard = () => {
         });
     });
 
-    if(playerRole === 'b'){
-        boardElement.classList.add("flipped")
-    }
-    else{
-        boardElement.classList.remove("flipped")   
+    if (playerRole === 'b') {
+        boardElement.classList.add("flipped");
+    } else {
+        boardElement.classList.remove("flipped");
     }
 };
 
@@ -106,14 +108,37 @@ const getPieceUnicode = (piece) => {
     return unicodePieces[piece.type] || "";
 };
 
-socket.on("playerRole", function(role) {
-    playerRole = role;
+const submitUsername = () => {
+    username = document.getElementById("username").value;
+    if (username) {
+        socket.emit("setUsername", username);
+        document.getElementById("username-form").style.display = "none";
+        document.getElementById("game").style.display = "block";
+        playerInfoElement.innerText = `Welcome, ${username}`;
+    }
+};
+
+socket.on("playerRole", function(data) {
+    playerRole = data.role;
+    playerInfoElement.innerText = `You are playing as ${data.role === "w" ? "White" : "Black"} (${data.username})`;
     renderBoard();
 });
 
 socket.on("spectatorRole", function() {
     playerRole = null;
+    playerInfoElement.innerText = `You are a spectator (${username})`;
     renderBoard();
+});
+
+socket.on("updatePlayers", function(players) {
+    let playerInfoText = "";
+    if (players.white) {
+        playerInfoText += `White: ${players.white.username}\n`;
+    }
+    if (players.black) {
+        playerInfoText += `Black: ${players.black.username}\n`;
+    }
+    playerInfoElement.innerText = playerInfoText;
 });
 
 socket.on("boardState", function(fen) {
