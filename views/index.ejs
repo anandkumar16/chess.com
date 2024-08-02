@@ -7,15 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-color: black;
+            background-color: #2f2f2f;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .chess img {
+            width: 400px;
+            height: 400px;
         }
         .gameplay {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            text-align: center;
         }
         .chessboard {
             display: grid;
@@ -88,7 +99,6 @@
         }
         #username-form {
             display: flex;
-            border: 2px solid #ccc;
             padding: 20px;
             border-radius: 5px;
             margin-bottom: 20px;
@@ -99,6 +109,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             margin-right: 10px;
+            color: black;
         }
         .btn {
             display: inline-block;
@@ -139,16 +150,22 @@
     </style>
 </head>
 <body>
-    <div class="gameplay">
-        <div id="username-form">
-            <input type="text" id="username" placeholder="Enter your username" />
-            <button onclick="submitUsername()" class="btn">Join Game</button>
+    <div class="container">
+        <div id="chess-image" class="chess">
+            <img src="/riyal.jpg" alt="chess">
         </div>
+        <div class="gameplay">
+            <h1 class="text-3xl font-bold mb-4">Play Chess Online</h1>
+            <div id="username-form">
+                <input type="text" id="username" placeholder="Enter your username" />
+                <button onclick="submitUsername()" class="btn">Join Game</button>
+            </div>
 
-        <div id="game">
-            <div id="player-info"></div>
-            <div class="chessboard"></div>
-            <div id="game-result"></div>
+            <div id="game">
+                <div id="player-info"></div>
+                <div class="chessboard"></div>
+                <div id="game-result"></div>
+            </div>
         </div>
     </div>
 

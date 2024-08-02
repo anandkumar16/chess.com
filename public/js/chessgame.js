@@ -114,6 +114,7 @@ const submitUsername = () => {
     if (username) {
         socket.emit("setUsername", username);
         document.getElementById("username-form").style.display = "none";
+        document.getElementById("chess-image").style.display = "none";
         document.getElementById("game").style.display = "block";
         playerInfoElement.innerText = `Welcome, ${username}`;
     }
